@@ -1,0 +1,1131 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Win Khant Paing — Web Developer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              display: ["Orbitron", "sans-serif"],
+              body: ["Rajdhani", "sans-serif"],
+            },
+            colors: {
+              ink: "#111110",
+              base: "#ffffff",
+              muted: "#555555",
+              soft: "#e5e5e5",
+              softer: "#f0f0f0",
+            },
+          },
+        },
+      };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        background: #ffffff;
+        color: #111110;
+        font-family: "Rajdhani", sans-serif;
+        overflow-x: hidden;
+        cursor: none;
+      }
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        pointer-events: none;
+        opacity: 0.045;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      }
+      #cur {
+        position: fixed;
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: #111110;
+        transform: translate(-50%, -50%);
+        mix-blend-mode: difference;
+        transition:
+          width 0.12s,
+          height 0.12s;
+      }
+      #curR {
+        position: fixed;
+        width: 34px;
+        height: 34px;
+        border: 1.5px solid #111110;
+        border-radius: 50%;
+        opacity: 0.18;
+        pointer-events: none;
+        z-index: 99998;
+        transform: translate(-50%, -50%);
+        transition:
+          width 0.1s,
+          height 0.1s,
+          opacity 0.1s;
+      }
+      body:has(a:hover) #cur,
+      body:has(button:hover) #cur {
+        width: 16px;
+        height: 16px;
+      }
+      body:has(a:hover) #curR,
+      body:has(button:hover) #curR {
+        width: 52px;
+        height: 52px;
+        opacity: 0.09;
+      }
+      #loader {
+        position: fixed;
+        inset: 0;
+        z-index: 100000;
+        background: #ffffff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition: clip-path 1.1s cubic-bezier(0.76, 0, 0.24, 1);
+      }
+      #loader.gone {
+        clip-path: inset(0 0 100% 0);
+      }
+      #lbar {
+        height: 100%;
+        width: 0%;
+        background: #111110;
+        transition: width 0.07s linear;
+      }
+      .rv {
+        opacity: 0;
+        transform: translateY(26px);
+        transition:
+          opacity 0.82s cubic-bezier(0.16, 1, 0.3, 1),
+          transform 0.82s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .rv.in {
+        opacity: 1;
+        transform: none;
+      }
+      .d1 {
+        transition-delay: 0.08s;
+      }
+      .d2 {
+        transition-delay: 0.17s;
+      }
+      .d3 {
+        transition-delay: 0.28s;
+      }
+      .outline-t {
+        color: transparent;
+        -webkit-text-stroke: 1.5px #111110;
+      }
+      .ghost-t {
+        color: transparent;
+        -webkit-text-stroke: 1px rgba(0, 0, 0, 0.1);
+      }
+      .marq {
+        display: flex;
+        width: max-content;
+        animation: mscroll 30s linear infinite;
+      }
+      @keyframes mscroll {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(-50%);
+        }
+      }
+      .prow {
+        position: relative;
+        overflow: hidden;
+        display: block;
+        text-decoration: none;
+        color: inherit;
+      }
+      .prow::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: #111110;
+        transform: translateX(-101%);
+        transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .prow:hover::before {
+        transform: translateX(0);
+      }
+      .prow:hover .pnum,
+      .prow:hover .ptitle,
+      .prow:hover .ptag,
+      .prow:hover .pyr,
+      .prow:hover .parr {
+        color: #ffffff !important;
+      }
+      .prow:hover .ptag {
+        background: rgba(255, 255, 255, 0.12) !important;
+      }
+      .farr {
+        display: inline-block;
+        transition: transform 0.36s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      a:hover .farr {
+        transform: translate(7px, -7px);
+      }
+      .pdot {
+        animation: pd 2.2s ease-in-out infinite;
+      }
+      @keyframes pd {
+        0%,
+        100% {
+          box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.2);
+        }
+        50% {
+          box-shadow: 0 0 0 7px rgba(0, 0, 0, 0);
+        }
+      }
+      .bd {
+        border-color: rgba(0, 0, 0, 0.12);
+      }
+      ::-webkit-scrollbar {
+        width: 4px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #ffffff;
+        background: #404040;
+        border-radius: 9px;
+      }
+      ::selection {
+        background: #111110;
+        color: #ffffff;
+      }
+      @media (max-width: 640px) {
+        .px-s {
+          padding-left: 20px !important;
+          padding-right: 20px !important;
+        }
+        .hide-s {
+          display: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body class="antialiased">
+    <div id="cur"></div>
+    <div id="curR"></div>
+
+    <div id="loader">
+      <p
+        id="llbl"
+        class="font-body text-[10px] font-semibold tracking-[.42em] uppercase text-muted mb-5"
+      >
+        Loading
+      </p>
+      <p
+        id="lnum"
+        class="font-display font-black leading-none text-ink"
+        style="font-size: clamp(90px, 19vw, 260px); letter-spacing: 0.04em"
+      >
+        0
+      </p>
+      <div class="absolute bottom-0 left-0 w-full h-[2px] bg-soft">
+        <div id="lbar"></div>
+      </div>
+    </div>
+
+    <nav
+      class="fixed top-0 left-0 w-full z-50 border-b bd bg-base/90 backdrop-blur-xl"
+      style="background: rgba(255, 255, 255, 0.9)"
+    >
+      <div
+        class="max-w-[1440px] mx-auto px-12 px-s h-[62px] flex items-center justify-between"
+      >
+        <a
+          href="../index.html"
+          class="font-display font-black text-[15px] tracking-[.15em] uppercase text-ink"
+          >W K P</a
+        >
+        <div class="hidden md:flex items-center gap-9">
+          <a
+            href="./work/"
+            class="nav-lnk font-body text-[13px] font-semibold tracking-[.28em] uppercase text-muted hover:text-ink transition-colors duration-200"
+            >Work</a
+          >
+          <a
+            href="./about/"
+            class="nav-lnk font-body text-[13px] font-semibold tracking-[.28em] uppercase text-muted hover:text-ink transition-colors duration-200"
+            >About</a
+          >
+          <a
+            href="./services/"
+            class="nav-lnk font-body text-[13px] font-semibold tracking-[.28em] uppercase text-muted hover:text-ink transition-colors duration-200"
+            >Skills</a
+          >
+        </div>
+        <a
+          href="./contact/"
+          class="hidden md:flex font-display font-bold text-[10px] tracking-[.2em] uppercase bg-ink text-base px-5 py-[10px] hover:opacity-75 transition-opacity duration-200"
+          >Let's Talk</a
+        >
+        <button id="mbtn" class="md:hidden text-ink" aria-label="menu">
+          <svg
+            width="22"
+            height="22"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            viewBox="0 0 24 24"
+          >
+            <path stroke-linecap="round" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <div
+      id="mmenu"
+      class="hidden fixed inset-0 z-[60] bg-base flex-col items-center justify-center gap-8"
+      style="background: #ffffff"
+    >
+      <button id="mclose" class="absolute top-5 right-6 text-ink">
+        <svg
+          width="26"
+          height="26"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          viewBox="0 0 24 24"
+        >
+          <path stroke-linecap="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+      <a
+        href="./work/"
+        class="font-display font-bold uppercase tracking-[.08em] hover:opacity-40 transition-opacity text-ink"
+        style="font-size: clamp(22px, 5vw, 38px)"
+        >Work</a
+      >
+      <a
+        href="./about/"
+        class="font-display font-bold uppercase tracking-[.08em] hover:opacity-40 transition-opacity text-ink"
+        style="font-size: clamp(22px, 5vw, 38px)"
+        >About</a
+      >
+      <a
+        href="./services/"
+        class="font-display font-bold uppercase tracking-[.08em] hover:opacity-40 transition-opacity text-ink"
+        style="font-size: clamp(22px, 5vw, 38px)"
+        >Skills</a
+      >
+      <a
+        href="./contact/"
+        class="font-display font-bold uppercase tracking-[.08em] hover:opacity-40 transition-opacity text-ink"
+        style="font-size: clamp(22px, 5vw, 38px)"
+        >Contact</a
+      >
+    </div>
+
+    <section
+      class="pt-[62px] min-h-svh flex flex-col border-b bd overflow-hidden relative"
+    >
+      <p
+        class="ghost-t font-display font-black absolute right-[-0.01em] bottom-[-0.07em] z-0 pointer-events-none select-none whitespace-nowrap leading-none uppercase"
+        style="font-size: clamp(80px, 14vw, 220px); letter-spacing: 0.04em"
+        aria-hidden="true"
+      >
+        DIGITAL
+      </p>
+      <div
+        class="flex-1 flex flex-col justify-end px-12 px-s pb-14 pt-16 max-w-[1440px] w-full mx-auto relative z-[1]"
+      >
+        <div class="flex items-center gap-3 mb-9 rv">
+          <span class="w-2 h-2 rounded-full bg-ink flex-shrink-0 pdot"></span>
+          <span
+            class="font-body text-[10px] font-semibold tracking-[.42em] uppercase text-muted"
+            >HND Graduate &mdash; Future Full-Stack Developer</span
+          >
+        </div>
+        <h1
+          class="font-display font-black uppercase leading-[.93]"
+          style="font-size: clamp(36px, 7.2vw, 114px); letter-spacing: 0.03em"
+        >
+          <div class="rv d1">Web</div>
+          <div class="outline-t rv d2">Developer</div>
+        </h1>
+      </div>
+      <div
+        class="grid border-t bd"
+        style="
+          grid-template-columns: repeat(3, 1fr);
+          gap: 1px;
+          background: rgba(0, 0, 0, 0.12);
+        "
+      >
+        <div class="bg-base px-12 px-s py-6 rv">
+          <p
+            class="font-body text-[10px] font-semibold tracking-[.4em] uppercase text-muted mb-2"
+          >
+            Education
+          </p>
+          <p
+            class="font-display font-bold"
+            style="font-size: clamp(20px, 2.4vw, 34px); letter-spacing: 0.04em"
+          >
+            HND
+          </p>
+        </div>
+        <div class="bg-base px-12 px-s py-6 rv d1">
+          <p
+            class="font-body text-[10px] font-semibold tracking-[.4em] uppercase text-muted mb-2"
+          >
+            Core Focus
+          </p>
+          <p
+            class="font-display font-bold"
+            style="font-size: clamp(20px, 2.4vw, 34px); letter-spacing: 0.04em"
+          >
+            Full-Stack
+          </p>
+        </div>
+        <div class="bg-base px-12 px-s py-6 rv d2">
+          <p
+            class="font-body text-[10px] font-semibold tracking-[.4em] uppercase text-muted mb-2"
+          >
+            Current Status
+          </p>
+          <p
+            class="font-body font-semibold"
+            style="font-size: clamp(13px, 1.4vw, 18px); letter-spacing: 0.1em"
+          >
+            BSc Computing
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <div class="overflow-hidden border-b bd">
+      <div class="marq">
+        <div class="flex" id="marq-items">
+          <div
+            class="flex items-center gap-3 px-6 py-[14px] border-r bd flex-shrink-0"
+          >
+            <svg
+              class="w-4 h-4 flex-shrink-0 text-muted"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path
+                d="M12 13.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zM12 2C6.98 2 3 4.686 3 8c0 1.566.755 2.993 2.01 4.122C3.755 13.251 3 14.678 3 16.244 3 19.558 6.98 22 12 22c5.02 0 9-2.686 9-5.756 0-1.566-.755-2.993-2.01-4.122C20.245 10.993 21 9.566 21 8c0-3.314-3.98-6-9-6zM5 8c0-2.206 3.134-4 7-4s7 1.794 7 4-3.134 4-7 4-7-1.794-7-4zm7 12c-3.866 0-7-1.794-7-4s3.134-4 7-4 7 1.794 7 4-3.134 4-7 4z"
+              />
+            </svg>
+            <span
+              class="font-display font-semibold text-[9px] tracking-[.28em] uppercase text-muted whitespace-nowrap"
+              >React.js</span
+            >
+          </div>
+          <div
+            class="flex items-center gap-3 px-6 py-[14px] border-r bd flex-shrink-0"
+          >
+            <svg
+              class="w-4 h-4 flex-shrink-0 text-muted"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path
+                d="M12 2L2 19.778h20L12 2zm0 3.677l7.33 12.657H4.67L12 5.677z"
+              />
+            </svg>
+            <span
+              class="font-display font-semibold text-[9px] tracking-[.28em] uppercase text-muted whitespace-nowrap"
+              >Three.js</span
+            >
+          </div>
+          <div
+            class="flex items-center gap-3 px-6 py-[14px] border-r bd flex-shrink-0"
+          >
+            <svg
+              class="w-4 h-4 flex-shrink-0 text-muted"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path
+                d="M11.572 0c-.176 0-.31.001-.358.007a19.76 19.76 0 0 1-.364.033C7.443.346 4.25 2.185 2.228 5.012a11.875 11.875 0 0 0-2.119 5.243c-.096.659-.108.854-.108 1.747s.012 1.089.108 1.748c.652 4.506 3.86 8.292 8.209 9.695.779.25 1.6.422 2.534.525.363.04 1.935.04 2.299 0 1.611-.178 2.977-.577 4.323-1.264.207-.106.247-.134.219-.158-.02-.013-.9-1.193-1.955-2.62l-1.919-2.592-2.404-3.558a338.739 338.739 0 0 0-2.422-3.556c-.009-.002-.018 1.579-.023 3.51-.007 3.38-.01 3.515-.052 3.595a.426.426 0 0 1-.206.214c-.075.037-.14.044-.495.044H7.81l-.108-.068a.438.438 0 0 1-.157-.171l-.05-.106.006-4.703.007-4.705.072-.092a.645.645 0 0 1 .174-.143c.096-.047.134-.051.54-.051.478 0 .558.018.682.154.035.038 1.337 1.999 2.895 4.361a10760.433 10760.433 0 0 0 4.735 7.17l1.9 2.879.096-.063a12.317 12.317 0 0 0 2.466-2.163 11.944 11.944 0 0 0 2.824-6.134c.096-.66.108-.854.108-1.748 0-.893-.012-1.088-.108-1.747-.652-4.506-3.859-8.292-8.208-9.695a12.597 12.597 0 0 0-2.499-.523A33.119 33.119 0 0 0 11.573 0zm4.069 7.217c.347 0 .408.005.486.047a.473.473 0 0 1 .237.277c.018.06.023 1.365.018 4.304l-.006 4.218-.744-1.14-.746-1.14v-3.066c0-1.982.01-3.097.023-3.15a.478.478 0 0 1 .233-.296c.096-.05.13-.054.5-.054z"
+              />
+            </svg>
+            <span
+              class="font-display font-semibold text-[9px] tracking-[.28em] uppercase text-muted whitespace-nowrap"
+              >Next.js</span
+            >
+          </div>
+          <div
+            class="flex items-center gap-3 px-6 py-[14px] border-r bd flex-shrink-0"
+          >
+            <svg
+              class="w-4 h-4 flex-shrink-0 text-muted"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path
+                d="M1.125 0C.502 0 0 .502 0 1.125v21.75C0 23.498.502 24 1.125 24h21.75c.623 0 1.125-.502 1.125-1.125V1.125C24 .502 23.498 0 22.875 0zm17.363 9.75c.612 0 1.154.037 1.627.111a6.38 6.38 0 0 1 1.306.34v2.458a3.95 3.95 0 0 0-.643-.361 5.093 5.093 0 0 0-.717-.26 5.453 5.453 0 0 0-1.426-.2c-.3 0-.573.028-.819.086a2.1 2.1 0 0 0-.623.242c-.17.104-.3.229-.393.374a.888.888 0 0 0-.14.49c0 .196.053.373.156.529.104.156.252.304.443.444s.423.276.696.41c.273.135.582.274.926.416.47.197.892.407 1.266.628.374.222.695.473.963.753.268.279.472.598.614.957.142.359.214.776.214 1.253 0 .657-.125 1.21-.373 1.656a3.033 3.033 0 0 1-1.012 1.085 4.38 4.38 0 0 1-1.487.596c-.566.12-1.163.18-1.79.18a9.916 9.916 0 0 1-1.84-.164 5.544 5.544 0 0 1-1.512-.493v-2.63a5.033 5.033 0 0 0 3.237 1.2c.333 0 .624-.03.872-.09.249-.06.456-.144.623-.25.166-.108.29-.234.373-.38a1.023 1.023 0 0 0-.074-1.089 2.12 2.12 0 0 0-.537-.5 5.597 5.597 0 0 0-.807-.444 27.72 27.72 0 0 0-1.007-.436c-.918-.383-1.602-.852-2.053-1.405-.45-.553-.676-1.222-.676-2.005 0-.614.123-1.141.369-1.582.246-.441.58-.804 1.004-1.089a4.494 4.494 0 0 1 1.47-.629 7.536 7.536 0 0 1 1.77-.201zm-15.113.188h9.563v2.166H9.506v9.646H6.789v-9.646H3.375z"
+              />
+            </svg>
+            <span
+              class="font-display font-semibold text-[9px] tracking-[.28em] uppercase text-muted whitespace-nowrap"
+              >TypeScript</span
+            >
+          </div>
+          <div
+            class="flex items-center gap-3 px-6 py-[14px] border-r bd flex-shrink-0"
+          >
+            <svg
+              class="w-4 h-4 flex-shrink-0 text-muted"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path
+                d="M12.001 4.8c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624C13.666 10.618 15.027 12 18.001 12c3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C16.337 6.182 14.976 4.8 12.001 4.8zm-6 7.2c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624 1.177 1.194 2.538 2.576 5.512 2.576 3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C10.337 13.382 8.976 12 6.001 12z"
+              />
+            </svg>
+            <span
+              class="font-display font-semibold text-[9px] tracking-[.28em] uppercase text-muted whitespace-nowrap"
+              >Tailwind CSS</span
+            >
+          </div>
+          <div
+            class="flex items-center gap-3 px-6 py-[14px] border-r bd flex-shrink-0"
+          >
+            <svg
+              class="w-4 h-4 flex-shrink-0 text-muted"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path
+                d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2zm-1 4v5H7v2h4v5h2v-5h4v-2h-4V6h-2z"
+              />
+            </svg>
+            <span
+              class="font-display font-semibold text-[9px] tracking-[.28em] uppercase text-muted whitespace-nowrap"
+              >GSAP</span
+            >
+          </div>
+          <div
+            class="flex items-center gap-3 px-6 py-[14px] border-r bd flex-shrink-0"
+          >
+            <svg
+              class="w-4 h-4 flex-shrink-0 text-muted"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path
+                d="M15.852 8.981h-4.588V0h4.588c2.476 0 4.49 2.014 4.49 4.49s-2.014 4.491-4.49 4.491zM12.735 7.51h3.117c1.665 0 3.019-1.355 3.019-3.019s-1.354-3.019-3.019-3.019h-3.117V7.51zm0 1.471H8.148c-2.476 0-4.49-2.014-4.49-4.49S5.672 0 8.148 0h4.587v8.981zm-4.587-7.51c-1.665 0-3.019 1.355-3.019 3.019s1.354 3.019 3.019 3.019h3.117V1.471H8.148zm4.587 15.019H8.148c-2.476 0-4.49-2.014-4.49-4.49s2.014-4.49 4.49-4.49h4.587v8.98zM8.148 8.981c-1.665 0-3.019 1.355-3.019 3.019s1.354 3.019 3.019 3.019h3.117V8.981H8.148zM8.172 24c-2.489 0-4.515-2.014-4.515-4.49s2.026-4.49 4.515-4.49c2.489 0 4.515 2.014 4.515 4.49S10.661 24 8.172 24zm0-7.51c-1.665 0-3.019 1.355-3.019 3.019s1.354 3.019 3.019 3.019 3.019-1.354 3.019-3.019-1.354-3.019-3.019-3.019z"
+              />
+            </svg>
+            <span
+              class="font-display font-semibold text-[9px] tracking-[.28em] uppercase text-muted whitespace-nowrap"
+              >Figma</span
+            >
+          </div>
+          <div
+            class="flex items-center gap-3 px-6 py-[14px] border-r bd flex-shrink-0"
+          >
+            <svg
+              class="w-4 h-4 flex-shrink-0 text-muted"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path
+                d="M11.998 24a1.362 1.362 0 0 1-.679-.18l-2.163-1.28c-.323-.18-.165-.244-.059-.28.431-.15.518-.184.977-.446a.168.168 0 0 1 .161.013l1.662.986a.215.215 0 0 0 .201 0l6.479-3.741a.205.205 0 0 0 .099-.177V7.104a.206.206 0 0 0-.1-.18l-6.477-3.738a.203.203 0 0 0-.2 0L5.422 6.924a.207.207 0 0 0-.102.18v7.481c0 .073.039.14.102.176l1.775 1.024c.963.481 1.554-.086 1.554-.657V7.633a.187.187 0 0 1 .188-.188h.822a.187.187 0 0 1 .187.188v7.495c0 1.285-.7 2.023-1.919 2.023-.375 0-.671 0-1.494-.406l-1.7-1.024a1.002 1.002 0 0 1-.68-.947V7.104c0-.39.208-.753.68-.946l6.48-3.742a1.42 1.42 0 0 1 1.357 0l6.479 3.742c.472.194.68.556.68.946v7.495c0 .39-.208.752-.68.947l-6.479 3.741a1.362 1.362 0 0 1-.678.18zm2-5.146c-2.838 0-3.429-1.302-3.429-2.395a.187.187 0 0 1 .188-.188h.838a.188.188 0 0 1 .188.162c.128.861.51 1.296 2.218 1.296 1.364 0 1.944-.309 1.944-1.033 0-.418-.165-.727-2.285-.936-1.772-.176-2.868-.566-2.868-1.982 0-1.306 1.1-2.085 2.946-2.085 2.073 0 3.098.719 3.228 2.265a.19.19 0 0 1-.049.143.185.185 0 0 1-.137.059h-.842a.187.187 0 0 1-.183-.154c-.202-.895-.694-1.182-2.017-1.182-1.486 0-1.659.518-1.659.906 0 .47.204.607 2.217.873 1.993.263 2.933.636 2.933 2.033 0 1.409-1.176 2.22-3.228 2.22l-.003-.002z"
+              />
+            </svg>
+            <span
+              class="font-display font-semibold text-[9px] tracking-[.28em] uppercase text-muted whitespace-nowrap"
+              >Node.js</span
+            >
+          </div>
+          <div
+            class="flex items-center gap-3 px-6 py-[14px] border-r bd flex-shrink-0"
+          >
+            <svg
+              class="w-4 h-4 flex-shrink-0 text-muted"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path
+                d="M4.5 4C2.016 4 0 6.016 0 8.5v7C0 17.983 2.016 20 4.5 20h15c2.484 0 4.5-2.017 4.5-4.5v-7C24 6.016 21.984 4 19.5 4H4.5zm7.942 3.67l2.034 6.28 1.653-4.13h1.218l1.654 4.13 2.033-6.28h1.344l-2.76 8.66h-1.19L16.624 12l-1.805 4.33h-1.19l-2.758-8.66h1.571zm-8.55.194h3.15c1.79 0 2.794.976 2.794 2.56v.017c0 1.718-1.14 2.628-2.94 2.628H5.22v3.471H3.892V7.864zm1.328 1.1v3.012h1.66c1.02 0 1.65-.523 1.65-1.49v-.016c0-.974-.621-1.506-1.65-1.506H5.22z"
+              />
+            </svg>
+            <span
+              class="font-display font-semibold text-[9px] tracking-[.28em] uppercase text-muted whitespace-nowrap"
+              >WebGL</span
+            >
+          </div>
+          <div
+            class="flex items-center gap-3 px-6 py-[14px] border-r bd flex-shrink-0"
+          >
+            <svg
+              class="w-4 h-4 flex-shrink-0 text-muted"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path d="M4 0h16v8h-8zM4 8h8l8 8H4zM4 16h8v8z" />
+            </svg>
+            <span
+              class="font-display font-semibold text-[9px] tracking-[.28em] uppercase text-muted whitespace-nowrap"
+              >Framer</span
+            >
+          </div>
+        </div>
+        <div class="flex" aria-hidden="true">
+          <div
+            class="flex items-center gap-3 px-6 py-[14px] border-r bd flex-shrink-0"
+          >
+            <svg
+              class="w-4 h-4 flex-shrink-0 text-muted"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path
+                d="M12 13.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zM12 2C6.98 2 3 4.686 3 8c0 1.566.755 2.993 2.01 4.122C3.755 13.251 3 14.678 3 16.244 3 19.558 6.98 22 12 22c5.02 0 9-2.686 9-5.756 0-1.566-.755-2.993-2.01-4.122C20.245 10.993 21 9.566 21 8c0-3.314-3.98-6-9-6zM5 8c0-2.206 3.134-4 7-4s7 1.794 7 4-3.134 4-7 4-7-1.794-7-4zm7 12c-3.866 0-7-1.794-7-4s3.134-4 7-4 7 1.794 7 4-3.134 4-7 4z"
+              />
+            </svg>
+            <span
+              class="font-display font-semibold text-[9px] tracking-[.28em] uppercase text-muted whitespace-nowrap"
+              >React.js</span
+            >
+          </div>
+          <div
+            class="flex items-center gap-3 px-6 py-[14px] border-r bd flex-shrink-0"
+          >
+            <svg
+              class="w-4 h-4 flex-shrink-0 text-muted"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path
+                d="M12 2L2 19.778h20L12 2zm0 3.677l7.33 12.657H4.67L12 5.677z"
+              />
+            </svg>
+            <span
+              class="font-display font-semibold text-[9px] tracking-[.28em] uppercase text-muted whitespace-nowrap"
+              >Three.js</span
+            >
+          </div>
+          <div
+            class="flex items-center gap-3 px-6 py-[14px] border-r bd flex-shrink-0"
+          >
+            <svg
+              class="w-4 h-4 flex-shrink-0 text-muted"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path
+                d="M11.572 0c-.176 0-.31.001-.358.007a19.76 19.76 0 0 1-.364.033C7.443.346 4.25 2.185 2.228 5.012a11.875 11.875 0 0 0-2.119 5.243c-.096.659-.108.854-.108 1.747s.012 1.089.108 1.748c.652 4.506 3.86 8.292 8.209 9.695.779.25 1.6.422 2.534.525.363.04 1.935.04 2.299 0 1.611-.178 2.977-.577 4.323-1.264.207-.106.247-.134.219-.158-.02-.013-.9-1.193-1.955-2.62l-1.919-2.592-2.404-3.558a338.739 338.739 0 0 0-2.422-3.556c-.009-.002-.018 1.579-.023 3.51-.007 3.38-.01 3.515-.052 3.595a.426.426 0 0 1-.206.214c-.075.037-.14.044-.495.044H7.81l-.108-.068a.438.438 0 0 1-.157-.171l-.05-.106.006-4.703.007-4.705.072-.092a.645.645 0 0 1 .174-.143c.096-.047.134-.051.54-.051.478 0 .558.018.682.154.035.038 1.337 1.999 2.895 4.361a10760.433 10760.433 0 0 0 4.735 7.17l1.9 2.879.096-.063a12.317 12.317 0 0 0 2.466-2.163 11.944 11.944 0 0 0 2.824-6.134c.096-.66.108-.854.108-1.748 0-.893-.012-1.088-.108-1.747-.652-4.506-3.859-8.292-8.208-9.695a12.597 12.597 0 0 0-2.499-.523A33.119 33.119 0 0 0 11.573 0zm4.069 7.217c.347 0 .408.005.486.047a.473.473 0 0 1 .237.277c.018.06.023 1.365.018 4.304l-.006 4.218-.744-1.14-.746-1.14v-3.066c0-1.982.01-3.097.023-3.15a.478.478 0 0 1 .233-.296c.096-.05.13-.054.5-.054z"
+              />
+            </svg>
+            <span
+              class="font-display font-semibold text-[9px] tracking-[.28em] uppercase text-muted whitespace-nowrap"
+              >Next.js</span
+            >
+          </div>
+          <div
+            class="flex items-center gap-3 px-6 py-[14px] border-r bd flex-shrink-0"
+          >
+            <svg
+              class="w-4 h-4 flex-shrink-0 text-muted"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path
+                d="M1.125 0C.502 0 0 .502 0 1.125v21.75C0 23.498.502 24 1.125 24h21.75c.623 0 1.125-.502 1.125-1.125V1.125C24 .502 23.498 0 22.875 0zm17.363 9.75c.612 0 1.154.037 1.627.111a6.38 6.38 0 0 1 1.306.34v2.458a3.95 3.95 0 0 0-.643-.361 5.093 5.093 0 0 0-.717-.26 5.453 5.453 0 0 0-1.426-.2c-.3 0-.573.028-.819.086a2.1 2.1 0 0 0-.623.242c-.17.104-.3.229-.393.374a.888.888 0 0 0-.14.49c0 .196.053.373.156.529.104.156.252.304.443.444s.423.276.696.41c.273.135.582.274.926.416.47.197.892.407 1.266.628.374.222.695.473.963.753.268.279.472.598.614.957.142.359.214.776.214 1.253 0 .657-.125 1.21-.373 1.656a3.033 3.033 0 0 1-1.012 1.085 4.38 4.38 0 0 1-1.487.596c-.566.12-1.163.18-1.79.18a9.916 9.916 0 0 1-1.84-.164 5.544 5.544 0 0 1-1.512-.493v-2.63a5.033 5.033 0 0 0 3.237 1.2c.333 0 .624-.03.872-.09.249-.06.456-.144.623-.25.166-.108.29-.234.373-.38a1.023 1.023 0 0 0-.074-1.089 2.12 2.12 0 0 0-.537-.5 5.597 5.597 0 0 0-.807-.444 27.72 27.72 0 0 0-1.007-.436c-.918-.383-1.602-.852-2.053-1.405-.45-.553-.676-1.222-.676-2.005 0-.614.123-1.141.369-1.582.246-.441.58-.804 1.004-1.089a4.494 4.494 0 0 1 1.47-.629 7.536 7.536 0 0 1 1.77-.201zm-15.113.188h9.563v2.166H9.506v9.646H6.789v-9.646H3.375z"
+              />
+            </svg>
+            <span
+              class="font-display font-semibold text-[9px] tracking-[.28em] uppercase text-muted whitespace-nowrap"
+              >TypeScript</span
+            >
+          </div>
+          <div
+            class="flex items-center gap-3 px-6 py-[14px] border-r bd flex-shrink-0"
+          >
+            <svg
+              class="w-4 h-4 flex-shrink-0 text-muted"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path
+                d="M12.001 4.8c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624C13.666 10.618 15.027 12 18.001 12c3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C16.337 6.182 14.976 4.8 12.001 4.8zm-6 7.2c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624 1.177 1.194 2.538 2.576 5.512 2.576 3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C10.337 13.382 8.976 12 6.001 12z"
+              />
+            </svg>
+            <span
+              class="font-display font-semibold text-[9px] tracking-[.28em] uppercase text-muted whitespace-nowrap"
+              >Tailwind CSS</span
+            >
+          </div>
+          <div
+            class="flex items-center gap-3 px-6 py-[14px] border-r bd flex-shrink-0"
+          >
+            <svg
+              class="w-4 h-4 flex-shrink-0 text-muted"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path
+                d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2zm-1 4v5H7v2h4v5h2v-5h4v-2h-4V6h-2z"
+              />
+            </svg>
+            <span
+              class="font-display font-semibold text-[9px] tracking-[.28em] uppercase text-muted whitespace-nowrap"
+              >GSAP</span
+            >
+          </div>
+          <div
+            class="flex items-center gap-3 px-6 py-[14px] border-r bd flex-shrink-0"
+          >
+            <svg
+              class="w-4 h-4 flex-shrink-0 text-muted"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path
+                d="M15.852 8.981h-4.588V0h4.588c2.476 0 4.49 2.014 4.49 4.49s-2.014 4.491-4.49 4.491zM12.735 7.51h3.117c1.665 0 3.019-1.355 3.019-3.019s-1.354-3.019-3.019-3.019h-3.117V7.51zm0 1.471H8.148c-2.476 0-4.49-2.014-4.49-4.49S5.672 0 8.148 0h4.587v8.981zm-4.587-7.51c-1.665 0-3.019 1.355-3.019 3.019s1.354 3.019 3.019 3.019h3.117V1.471H8.148zm4.587 15.019H8.148c-2.476 0-4.49-2.014-4.49-4.49s2.014-4.49 4.49-4.49h4.587v8.98zM8.148 8.981c-1.665 0-3.019 1.355-3.019 3.019s1.354 3.019 3.019 3.019h3.117V8.981H8.148zM8.172 24c-2.489 0-4.515-2.014-4.515-4.49s2.026-4.49 4.515-4.49c2.489 0 4.515 2.014 4.515 4.49S10.661 24 8.172 24zm0-7.51c-1.665 0-3.019 1.355-3.019 3.019s1.354 3.019 3.019 3.019 3.019-1.354 3.019-3.019-1.354-3.019-3.019-3.019z"
+              />
+            </svg>
+            <span
+              class="font-display font-semibold text-[9px] tracking-[.28em] uppercase text-muted whitespace-nowrap"
+              >Figma</span
+            >
+          </div>
+          <div
+            class="flex items-center gap-3 px-6 py-[14px] border-r bd flex-shrink-0"
+          >
+            <svg
+              class="w-4 h-4 flex-shrink-0 text-muted"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path
+                d="M11.998 24a1.362 1.362 0 0 1-.679-.18l-2.163-1.28c-.323-.18-.165-.244-.059-.28.431-.15.518-.184.977-.446a.168.168 0 0 1 .161.013l1.662.986a.215.215 0 0 0 .201 0l6.479-3.741a.205.205 0 0 0 .099-.177V7.104a.206.206 0 0 0-.1-.18l-6.477-3.738a.203.203 0 0 0-.2 0L5.422 6.924a.207.207 0 0 0-.102.18v7.481c0 .073.039.14.102.176l1.775 1.024c.963.481 1.554-.086 1.554-.657V7.633a.187.187 0 0 1 .188-.188h.822a.187.187 0 0 1 .187.188v7.495c0 1.285-.7 2.023-1.919 2.023-.375 0-.671 0-1.494-.406l-1.7-1.024a1.002 1.002 0 0 1-.68-.947V7.104c0-.39.208-.753.68-.946l6.48-3.742a1.42 1.42 0 0 1 1.357 0l6.479 3.742c.472.194.68.556.68.946v7.495c0 .39-.208.752-.68.947l-6.479 3.741a1.362 1.362 0 0 1-.678.18zm2-5.146c-2.838 0-3.429-1.302-3.429-2.395a.187.187 0 0 1 .188-.188h.838a.188.188 0 0 1 .188.162c.128.861.51 1.296 2.218 1.296 1.364 0 1.944-.309 1.944-1.033 0-.418-.165-.727-2.285-.936-1.772-.176-2.868-.566-2.868-1.982 0-1.306 1.1-2.085 2.946-2.085 2.073 0 3.098.719 3.228 2.265a.19.19 0 0 1-.049.143.185.185 0 0 1-.137.059h-.842a.187.187 0 0 1-.183-.154c-.202-.895-.694-1.182-2.017-1.182-1.486 0-1.659.518-1.659.906 0 .47.204.607 2.217.873 1.993.263 2.933.636 2.933 2.033 0 1.409-1.176 2.22-3.228 2.22l-.003-.002z"
+              />
+            </svg>
+            <span
+              class="font-display font-semibold text-[9px] tracking-[.28em] uppercase text-muted whitespace-nowrap"
+              >Node.js</span
+            >
+          </div>
+          <div
+            class="flex items-center gap-3 px-6 py-[14px] border-r bd flex-shrink-0"
+          >
+            <svg
+              class="w-4 h-4 flex-shrink-0 text-muted"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path
+                d="M4.5 4C2.016 4 0 6.016 0 8.5v7C0 17.983 2.016 20 4.5 20h15c2.484 0 4.5-2.017 4.5-4.5v-7C24 6.016 21.984 4 19.5 4H4.5zm7.942 3.67l2.034 6.28 1.653-4.13h1.218l1.654 4.13 2.033-6.28h1.344l-2.76 8.66h-1.19L16.624 12l-1.805 4.33h-1.19l-2.758-8.66h1.571zm-8.55.194h3.15c1.79 0 2.794.976 2.794 2.56v.017c0 1.718-1.14 2.628-2.94 2.628H5.22v3.471H3.892V7.864zm1.328 1.1v3.012h1.66c1.02 0 1.65-.523 1.65-1.49v-.016c0-.974-.621-1.506-1.65-1.506H5.22z"
+              />
+            </svg>
+            <span
+              class="font-display font-semibold text-[9px] tracking-[.28em] uppercase text-muted whitespace-nowrap"
+              >WebGL</span
+            >
+          </div>
+          <div
+            class="flex items-center gap-3 px-6 py-[14px] border-r bd flex-shrink-0"
+          >
+            <svg
+              class="w-4 h-4 flex-shrink-0 text-muted"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path d="M4 0h16v8h-8zM4 8h8l8 8H4zM4 16h8v8z" />
+            </svg>
+            <span
+              class="font-display font-semibold text-[9px] tracking-[.28em] uppercase text-muted whitespace-nowrap"
+              >Framer</span
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="border-b bd">
+      <div
+        class="max-w-[1440px] mx-auto px-12 px-s pt-16 pb-12 flex justify-between items-end border-b bd rv"
+      >
+        <div>
+          <p
+            class="font-body text-[10px] font-semibold tracking-[.42em] uppercase text-muted mb-3"
+          >
+            Selected Works
+          </p>
+          <h2
+            class="font-display font-black uppercase leading-tight"
+            style="font-size: clamp(28px, 4.5vw, 64px); letter-spacing: 0.04em"
+          >
+            Projects
+          </h2>
+        </div>
+        <a
+          href="work.html"
+          class="hide-s font-body text-[11px] font-bold tracking-[.28em] uppercase text-muted border-b bd pb-1 flex items-center gap-2 hover:text-ink hover:border-ink transition-colors duration-200"
+          >Full Archive &nbsp;&#8599;</a
+        >
+      </div>
+
+      <a href="#" class="prow border-b bd rv">
+        <div
+          class="relative z-[1] grid max-w-[1440px] mx-auto px-12 px-s"
+          style="
+            grid-template-columns: 52px 1fr auto;
+            align-items: center;
+            min-height: 92px;
+          "
+        >
+          <span
+            class="pnum font-display text-[10px] font-normal tracking-[.1em] text-muted"
+            >01</span
+          >
+          <div class="py-5">
+            <p
+              class="ptitle font-display font-bold uppercase tracking-[.05em] mb-[10px] text-ink"
+              style="font-size: clamp(15px, 1.9vw, 26px)"
+            >
+              E-Commerce Interface
+            </p>
+            <div class="flex gap-2 flex-wrap">
+              <span
+                class="ptag font-body text-[10px] font-bold tracking-[.2em] uppercase px-3 py-[3px] bg-soft text-muted"
+                >HTML/CSS</span
+              >
+              <span
+                class="ptag font-body text-[10px] font-bold tracking-[.2em] uppercase px-3 py-[3px] bg-soft text-muted"
+                >Tailwind CSS</span
+              >
+            </div>
+          </div>
+          <div class="flex items-center gap-4 hide-s">
+            <span
+              class="pyr font-body text-[11px] font-semibold tracking-[.28em] text-muted"
+              >2024</span
+            ><span class="parr text-[22px] text-muted leading-none"
+              >&#8599;</span
+            >
+          </div>
+        </div>
+      </a>
+
+      <a href="#" class="prow border-b bd rv d1">
+        <div
+          class="relative z-[1] grid max-w-[1440px] mx-auto px-12 px-s"
+          style="
+            grid-template-columns: 52px 1fr auto;
+            align-items: center;
+            min-height: 92px;
+          "
+        >
+          <span
+            class="pnum font-display text-[10px] font-normal tracking-[.1em] text-muted"
+            >02</span
+          >
+          <div class="py-5">
+            <p
+              class="ptitle font-display font-bold uppercase tracking-[.05em] mb-[10px] text-ink"
+              style="font-size: clamp(15px, 1.9vw, 26px)"
+            >
+              Interactive Dashboard
+            </p>
+            <div class="flex gap-2 flex-wrap">
+              <span
+                class="ptag font-body text-[10px] font-bold tracking-[.2em] uppercase px-3 py-[3px] bg-soft text-muted"
+                >JavaScript</span
+              >
+              <span
+                class="ptag font-body text-[10px] font-bold tracking-[.2em] uppercase px-3 py-[3px] bg-soft text-muted"
+                >Logic</span
+              >
+            </div>
+          </div>
+          <div class="flex items-center gap-4 hide-s">
+            <span
+              class="pyr font-body text-[11px] font-semibold tracking-[.28em] text-muted"
+              >2024</span
+            ><span class="parr text-[22px] text-muted leading-none"
+              >&#8599;</span
+            >
+          </div>
+        </div>
+      </a>
+
+      <a href="#" class="prow border-b bd rv d2">
+        <div
+          class="relative z-[1] grid max-w-[1440px] mx-auto px-12 px-s"
+          style="
+            grid-template-columns: 52px 1fr auto;
+            align-items: center;
+            min-height: 92px;
+          "
+        >
+          <span
+            class="pnum font-display text-[10px] font-normal tracking-[.1em] text-muted"
+            >03</span
+          >
+          <div class="py-5">
+            <p
+              class="ptitle font-display font-bold uppercase tracking-[.05em] mb-[10px] text-ink"
+              style="font-size: clamp(15px, 1.9vw, 26px)"
+            >
+              Student Portal Prototype
+            </p>
+            <div class="flex gap-2 flex-wrap">
+              <span
+                class="ptag font-body text-[10px] font-bold tracking-[.2em] uppercase px-3 py-[3px] bg-soft text-muted"
+                >React.js</span
+              >
+              <span
+                class="ptag font-body text-[10px] font-bold tracking-[.2em] uppercase px-3 py-[3px] bg-soft text-muted"
+                >Concept</span
+              >
+            </div>
+          </div>
+          <div class="flex items-center gap-4 hide-s">
+            <span
+              class="pyr font-body text-[11px] font-semibold tracking-[.28em] text-muted"
+              >2023</span
+            ><span class="parr text-[22px] text-muted leading-none"
+              >&#8599;</span
+            >
+          </div>
+        </div>
+      </a>
+    </section>
+
+    <section
+      class="grid md:grid-cols-2 border-b bd"
+      style="gap: 1px; background: rgba(0, 0, 0, 0.12)"
+    >
+      <div class="bg-base px-12 px-s py-20 rv">
+        <h2
+          class="font-display font-black uppercase leading-[1.03] mb-10"
+          style="font-size: clamp(24px, 4vw, 60px); letter-spacing: 0.03em"
+        >
+          Building<br /><span style="opacity: 0.22; font-weight: 400"
+            >the digital</span
+          ><br />Future.
+        </h2>
+        <p
+          class="font-body leading-[1.78] text-muted max-w-[360px]"
+          style="font-size: clamp(15px, 1.3vw, 18px)"
+        >
+          Since a young age, I have been fascinated by how systems and software
+          work. My goal is to become a successful full-stack developer, using
+          code to build analytical tools and solve real-world challenges.
+        </p>
+        <a
+          href="contact.html"
+          class="inline-flex items-center gap-3 mt-11 font-display font-bold text-[10px] tracking-[.2em] uppercase border-b border-ink pb-[5px] hover:opacity-50 transition-opacity duration-200"
+          >Get in touch &nbsp;&#8599;</a
+        >
+      </div>
+      <div class="bg-base px-12 px-s py-20 rv d1">
+        <p
+          class="font-body text-[10px] font-semibold tracking-[.42em] uppercase text-muted mb-6"
+        >
+          My Focus Areas
+        </p>
+        <div>
+          <div class="flex justify-between items-center py-[18px] border-b bd">
+            <span
+              class="font-body text-[13px] font-semibold tracking-[.18em] uppercase"
+              >Web Development</span
+            ><span class="text-muted">↗</span>
+          </div>
+          <div class="flex justify-between items-center py-[18px] border-b bd">
+            <span
+              class="font-body text-[13px] font-semibold tracking-[.18em] uppercase"
+              >Responsive Design</span
+            ><span class="text-muted">↗</span>
+          </div>
+          <div class="flex justify-between items-center py-[18px] border-b bd">
+            <span
+              class="font-body text-[13px] font-semibold tracking-[.18em] uppercase"
+              >Front-End Interfaces</span
+            ><span class="text-muted">&#8599;</span>
+          </div>
+          <div class="flex justify-between items-center py-[18px] border-b bd">
+            <span
+              class="font-body text-[13px] font-semibold tracking-[.18em] uppercase"
+              >Analytical Problem Solving</span
+            ><span class="text-muted">&#8599;</span>
+          </div>
+          <div class="flex justify-between items-center py-[18px]">
+            <span
+              class="font-body text-[13px] font-semibold tracking-[.18em] uppercase"
+              >Full-Stack Architecture</span
+            ><span class="text-muted">&#8599;</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="border-t bd">
+      <div class="max-w-[1440px] mx-auto px-12 px-s pt-20 pb-16 border-b bd rv">
+        <p
+          class="font-body text-[11px] font-semibold tracking-[.4em] uppercase text-muted mb-5"
+        >
+          Got a project in mind?
+        </p>
+        <a
+          href="contact.html"
+          class="inline-flex items-center gap-5 font-display font-black uppercase leading-none hover:opacity-50 transition-opacity duration-200"
+          style="font-size: clamp(28px, 5.5vw, 88px); letter-spacing: 0.04em"
+        >
+          Let's Talk <span class="farr" style="font-size: 0.55em">&#8599;</span>
+        </a>
+      </div>
+      <div
+        class="max-w-[1440px] mx-auto px-12 px-s py-5 flex justify-between items-center flex-wrap gap-4"
+      >
+        <span
+          class="font-body text-[11px] font-semibold tracking-[.24em] uppercase text-muted"
+          >&copy; <span class="yr"></span> Win Khant Paing. All rights
+          reserved.</span
+        >
+        <div class="flex gap-6">
+          <a
+            href="#"
+            class="font-body text-[11px] font-semibold tracking-[.24em] uppercase text-muted hover:text-ink transition-colors duration-200"
+            >Twitter</a
+          >
+          <a
+            href="#"
+            class="font-body text-[11px] font-semibold tracking-[.24em] uppercase text-muted hover:text-ink transition-colors duration-200"
+            >GitHub</a
+          >
+          <a
+            href="#"
+            class="font-body text-[11px] font-semibold tracking-[.24em] uppercase text-muted hover:text-ink transition-colors duration-200"
+            >LinkedIn</a
+          >
+          <a
+            href="#"
+            class="font-body text-[11px] font-semibold tracking-[.24em] uppercase text-muted hover:text-ink transition-colors duration-200"
+            >Dribbble</a
+          >
+        </div>
+      </div>
+    </footer>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        document
+          .querySelectorAll(".yr")
+          .forEach((el) => (el.textContent = new Date().getFullYear()));
+        const page = location.pathname.split("/").pop() || "index.html";
+        document.querySelectorAll(".nav-lnk").forEach((a) => {
+          if (a.getAttribute("href") === page) {
+            a.classList.remove("text-muted");
+            a.classList.add("text-ink");
+          }
+        });
+        const cur = document.getElementById("cur"),
+          curR = document.getElementById("curR");
+        let mx = 0,
+          my = 0,
+          rx = 0,
+          ry = 0;
+        document.addEventListener("mousemove", (e) => {
+          mx = e.clientX;
+          my = e.clientY;
+        });
+        (function loop() {
+          cur.style.left = mx + "px";
+          cur.style.top = my + "px";
+          rx += (mx - rx) * 0.13;
+          ry += (my - ry) * 0.13;
+          curR.style.left = rx + "px";
+          curR.style.top = ry + "px";
+          requestAnimationFrame(loop);
+        })();
+        const mm = document.getElementById("mmenu");
+        document.getElementById("mbtn").addEventListener("click", () => {
+          mm.classList.remove("hidden");
+          mm.classList.add("flex");
+          document.body.style.overflow = "hidden";
+        });
+        const closeM = () => {
+          mm.classList.add("hidden");
+          mm.classList.remove("flex");
+          document.body.style.overflow = "";
+        };
+        document.getElementById("mclose").addEventListener("click", closeM);
+        mm.querySelectorAll("a").forEach((a) =>
+          a.addEventListener("click", closeM),
+        );
+        const loader = document.getElementById("loader"),
+          lnum = document.getElementById("lnum"),
+          lbar = document.getElementById("lbar"),
+          llbl = document.getElementById("llbl");
+        document.body.style.overflow = "hidden";
+        let p = 0,
+          done = false;
+        window.addEventListener("load", () => {
+          done = true;
+          llbl.textContent = "Ready";
+        });
+        if (document.readyState === "complete") done = true;
+        function tick() {
+          p += done
+            ? Math.floor(Math.random() * 18) + 6
+            : Math.min(Math.floor(Math.random() * 4) + 1, 90 - p);
+          if (p >= 100) {
+            lnum.textContent = 100;
+            lbar.style.width = "100%";
+            setTimeout(() => {
+              loader.classList.add("gone");
+              document.body.style.overflow = "";
+              setTimeout(initReveal, 350);
+              setTimeout(() => loader.remove(), 1300);
+            }, 500);
+            return;
+          }
+          lnum.textContent = p;
+          lbar.style.width = p + "%";
+          setTimeout(tick, done ? 50 : 85 + Math.random() * 90);
+        }
+        setTimeout(tick, 350);
+        function initReveal() {
+          const io = new IntersectionObserver(
+            (entries, obs) => {
+              entries.forEach((en) => {
+                if (en.isIntersecting) {
+                  en.target.classList.add("in");
+                  obs.unobserve(en.target);
+                }
+              });
+            },
+            { rootMargin: "0px 0px -5% 0px", threshold: 0.05 },
+          );
+          document.querySelectorAll(".rv").forEach((el) => io.observe(el));
+        }
+      });
+    </script>
+  </body>
+</html>
