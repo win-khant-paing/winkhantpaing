@@ -1,0 +1,818 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About | Win Khant Paing</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              display: ["Orbitron", "sans-serif"],
+              body: ["Rajdhani", "sans-serif"],
+            },
+            colors: {
+              ink: "#111110",
+              muted: "#737373",
+              soft: "#e5e5e5",
+              softer: "#f5f5f5",
+            },
+          },
+        },
+      };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        background: #fff;
+        color: #111110;
+        font-family: "Rajdhani", sans-serif;
+        overflow-x: hidden;
+        cursor: none;
+      }
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        pointer-events: none;
+        opacity: 0.04;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      }
+      #cur {
+        position: fixed;
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: #111110;
+        pointer-events: none;
+        z-index: 99999;
+        transform: translate(-50%, -50%);
+        mix-blend-mode: multiply;
+        transition:
+          width 0.12s,
+          height 0.12s;
+      }
+      #cur-r {
+        position: fixed;
+        width: 34px;
+        height: 34px;
+        border: 1.5px solid #111110;
+        border-radius: 50%;
+        opacity: 0.18;
+        pointer-events: none;
+        z-index: 99998;
+        transform: translate(-50%, -50%);
+        transition:
+          width 0.1s,
+          height 0.1s;
+      }
+      body:has(a:hover) #cur,
+      body:has(button:hover) #cur {
+        width: 16px;
+        height: 16px;
+      }
+      body:has(a:hover) #cur-r,
+      body:has(button:hover) #cur-r {
+        width: 52px;
+        height: 52px;
+        opacity: 0.09;
+      }
+      #loader {
+        position: fixed;
+        inset: 0;
+        z-index: 100000;
+        background: #fff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition: clip-path 1.2s cubic-bezier(0.76, 0, 0.24, 1);
+      }
+      #loader.gone {
+        clip-path: inset(0 0 100% 0);
+      }
+      #loader-fill {
+        height: 100%;
+        width: 0%;
+        background: #111110;
+        transition: width 0.08s linear;
+      }
+      .r {
+        opacity: 0;
+        transform: translateY(26px);
+        transition:
+          opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+          transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .r.v {
+        opacity: 1;
+        transform: none;
+      }
+      .d1 {
+        transition-delay: 0.09s;
+      }
+      .d2 {
+        transition-delay: 0.19s;
+      }
+      .d3 {
+        transition-delay: 0.31s;
+      }
+      .outline-t {
+        color: transparent;
+        -webkit-text-stroke: 1.5px #111110;
+      }
+      .ghost-t {
+        color: transparent;
+        -webkit-text-stroke: 1px rgba(17, 17, 16, 0.07);
+      }
+      .marq {
+        display: flex;
+        width: max-content;
+        animation: mscroll 30s linear infinite;
+      }
+      @keyframes mscroll {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(-50%);
+        }
+      }
+      .farr {
+        display: inline-block;
+        transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      a:hover .farr {
+        transform: translate(7px, -7px);
+      }
+      .bd {
+        border-color: rgba(17, 17, 16, 0.11);
+      }
+      ::-webkit-scrollbar {
+        width: 4px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #fff;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #ddd;
+        border-radius: 9px;
+      }
+      ::selection {
+        background: #111110;
+        color: #fff;
+      }
+      @media (max-width: 640px) {
+        .px-s {
+          padding-left: 20px !important;
+          padding-right: 20px !important;
+        }
+        .hide-s {
+          display: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body class="antialiased">
+    <div id="cur"></div>
+    <div id="cur-r"></div>
+
+    <div id="loader">
+      <p
+        id="loader-label"
+        class="font-body text-[10px] font-semibold tracking-[.42em] uppercase text-muted mb-5"
+      >
+        Loading
+      </p>
+      <p
+        id="loader-num"
+        class="font-display font-black leading-none text-ink"
+        style="font-size: clamp(90px, 19vw, 260px); letter-spacing: 0.04em"
+      >
+        0
+      </p>
+      <div class="absolute bottom-0 left-0 w-full h-[2px] bg-soft">
+        <div id="loader-fill"></div>
+      </div>
+    </div>
+
+    <nav
+      class="fixed top-0 left-0 w-full z-50 border-b bd backdrop-blur-xl"
+      style="background: rgba(255, 255, 255, 0.92)"
+    >
+      <div
+        class="max-w-[1440px] mx-auto px-12 px-s h-[62px] flex items-center justify-between"
+      >
+        <a
+          href="../index.html"
+          class="font-display font-black text-[15px] tracking-[.15em] uppercase text-ink"
+          >W K P</a
+        >
+        <div class="hidden md:flex items-center gap-9">
+          <a
+            href="../work/"
+            class="font-body text-[13px] font-semibold tracking-[.28em] uppercase text-muted hover:text-ink transition-colors duration-200"
+            >Work</a
+          >
+          <a
+            href="../about/"
+            class="font-body text-[13px] font-semibold tracking-[.28em] uppercase text-ink"
+            >About</a
+          >
+          <a
+            href="../services/"
+            class="font-body text-[13px] font-semibold tracking-[.28em] uppercase text-muted hover:text-ink transition-colors duration-200"
+            >Skills</a
+          >
+        </div>
+        <a
+          href="../contact/"
+          class="hidden md:flex font-display font-bold text-[10px] tracking-[.2em] uppercase bg-ink text-white px-5 py-[10px] hover:opacity-75 transition-opacity duration-200"
+          >Let's Talk</a
+        >
+        <button id="mob-btn" class="md:hidden text-ink" aria-label="Open menu">
+          <svg
+            width="22"
+            height="22"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            viewBox="0 0 24 24"
+          >
+            <path stroke-linecap="round" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <div
+      id="mob-menu"
+      class="hidden fixed inset-0 z-[60] bg-white flex-col items-center justify-center gap-8"
+    >
+      <button id="mob-close" class="absolute top-5 right-6 text-ink">
+        <svg
+          width="26"
+          height="26"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          viewBox="0 0 24 24"
+        >
+          <path stroke-linecap="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+      <a
+        href="../work/"
+        class="font-display font-bold uppercase tracking-[.08em] hover:opacity-40 transition-opacity"
+        style="font-size: clamp(22px, 5.5vw, 40px)"
+        >Work</a
+      >
+      <a
+        href="../about/"
+        class="font-display font-bold uppercase tracking-[.08em] hover:opacity-40 transition-opacity"
+        style="font-size: clamp(22px, 5.5vw, 40px)"
+        >About</a
+      >
+      <a
+        href="../services/"
+        class="font-display font-bold uppercase tracking-[.08em] hover:opacity-40 transition-opacity"
+        style="font-size: clamp(22px, 5.5vw, 40px)"
+        >Skills</a
+      >
+      <a
+        href="../contact/"
+        class="font-display font-bold uppercase tracking-[.08em] hover:opacity-40 transition-opacity"
+        style="font-size: clamp(22px, 5.5vw, 40px)"
+        >Contact</a
+      >
+    </div>
+
+    <div
+      class="max-w-[1440px] mx-auto px-12 px-s pt-[120px] pb-16 border-b bd r"
+    >
+      <div class="flex items-center gap-4 mb-7">
+        <span class="block w-7 h-px bg-muted flex-shrink-0"></span>
+        <span
+          class="font-body text-[10px] font-semibold tracking-[.45em] uppercase text-muted"
+          >Background</span
+        >
+      </div>
+      <h1
+        class="font-display font-black uppercase leading-[.95] mb-8"
+        style="font-size: clamp(30px, 6.5vw, 100px); letter-spacing: 0.03em"
+      >
+        <div>Logic</div>
+        <div class="outline-t">Engineered</div>
+      </h1>
+      <p
+        class="font-body leading-[1.72] text-muted max-w-[560px]"
+        style="font-size: clamp(15px, 1.4vw, 20px)"
+      >
+        Fascinated by how systems work since a young age, I am a web developer
+        blending creativity with analytical problem-solving to build digital
+        tools that meet users' needs.
+      </p>
+    </div>
+
+    <div
+      class="grid md:grid-cols-2 border-b bd"
+      style="gap: 1px; background: rgba(17, 17, 16, 0.11)"
+    >
+      <div
+        class="bg-softer flex items-center justify-center overflow-hidden r"
+        style="min-height: 400px"
+      >
+        <p
+          class="ghost-t font-display font-black select-none pointer-events-none leading-none"
+          style="font-size: clamp(60px, 14vw, 200px); letter-spacing: 0.05em"
+        >
+          WKP
+        </p>
+      </div>
+      <div class="bg-white px-12 px-s py-16 r d1">
+        <p
+          class="font-display font-bold uppercase leading-[1.2] mb-8"
+          style="font-size: clamp(16px, 2.2vw, 30px); letter-spacing: 0.03em"
+        >
+          Driven by <span class="opacity-30 font-normal">curiosity</span>,
+          building the
+          <span class="opacity-30 font-normal">digital future.</span>
+        </p>
+        <div
+          class="font-body leading-[1.78] text-muted space-y-5"
+          style="font-size: clamp(15px, 1.3vw, 18px)"
+        >
+          <p>
+            I am Win Khant Paing, and I have completed my Higher National
+            Diploma (HND). Watching movies about hacking and programming
+            inspired my curiosity about how people use coding to create digital
+            tools and solve problems.
+          </p>
+          <p>
+            To strengthen my foundation, I have attended several online web
+            development courses, where I learned the basics of HTML, CSS,
+            JavaScript, Tailwind CSS, and responsive design. The reason I chose
+            the BSc Computing program is that it provides a flexible,
+            high-quality learning experience, helping me build the analytical
+            skills needed to become a successful full-stack developer.
+          </p>
+        </div>
+      </div>
+      <div
+        class="bg-white px-12 px-s py-16 flex flex-col items-center justify-center text-center r"
+      >
+        <p
+          class="font-display font-black leading-none"
+          style="font-size: clamp(40px, 5vw, 80px); letter-spacing: 0.02em"
+        >
+          HND
+        </p>
+        <p
+          class="font-body text-[11px] font-semibold tracking-[.35em] uppercase text-muted mt-3"
+        >
+          Completed
+        </p>
+      </div>
+      <div
+        class="bg-white px-12 px-s py-16 flex flex-col items-center justify-center text-center r d1"
+      >
+        <p
+          class="font-display font-black leading-none"
+          style="font-size: clamp(40px, 5vw, 80px); letter-spacing: 0.02em"
+        >
+          BSc
+        </p>
+        <p
+          class="font-body text-[11px] font-semibold tracking-[.35em] uppercase text-muted mt-3"
+        >
+          In Progress
+        </p>
+      </div>
+      <div class="bg-ink text-white px-12 px-s py-14 md:col-span-2 r d2">
+        <p
+          class="font-body text-[10px] font-semibold tracking-[.42em] uppercase mb-4"
+          style="opacity: 0.5"
+        >
+          Student &amp; Aspiring Developer
+        </p>
+        <p
+          class="font-display font-bold uppercase"
+          style="font-size: clamp(18px, 2.5vw, 32px); letter-spacing: 0.04em"
+        >
+          Available for Opportunities
+        </p>
+        <a
+          href="./contact.html"
+          class="inline-flex items-center gap-3 mt-7 font-display font-bold text-[10px] tracking-[.25em] uppercase border-b pb-[5px] hover:opacity-60 transition-opacity duration-200 text-white"
+          style="border-color: rgba(255, 255, 255, 0.35)"
+        >
+          Hire Me &nbsp;↗
+        </a>
+      </div>
+    </div>
+
+    <div class="overflow-hidden border-b bd">
+      <div class="marq">
+        <div class="flex">
+          <div
+            class="flex items-center gap-6 px-6 py-[14px] border-r bd flex-shrink-0"
+          >
+            <span
+              class="font-display font-semibold text-[9px] tracking-[.3em] uppercase text-muted whitespace-nowrap"
+              >HTML / CSS</span
+            ><span
+              class="w-[5px] h-[5px] rounded-full bg-soft flex-shrink-0"
+            ></span>
+          </div>
+          <div
+            class="flex items-center gap-6 px-6 py-[14px] border-r bd flex-shrink-0"
+          >
+            <span
+              class="font-display font-semibold text-[9px] tracking-[.3em] uppercase text-muted whitespace-nowrap"
+              >JavaScript</span
+            ><span
+              class="w-[5px] h-[5px] rounded-full bg-soft flex-shrink-0"
+            ></span>
+          </div>
+          <div
+            class="flex items-center gap-6 px-6 py-[14px] border-r bd flex-shrink-0"
+          >
+            <span
+              class="font-display font-semibold text-[9px] tracking-[.3em] uppercase text-muted whitespace-nowrap"
+              >Tailwind CSS</span
+            ><span
+              class="w-[5px] h-[5px] rounded-full bg-soft flex-shrink-0"
+            ></span>
+          </div>
+          <div
+            class="flex items-center gap-6 px-6 py-[14px] border-r bd flex-shrink-0"
+          >
+            <span
+              class="font-display font-semibold text-[9px] tracking-[.3em] uppercase text-muted whitespace-nowrap"
+              >React.js</span
+            ><span
+              class="w-[5px] h-[5px] rounded-full bg-soft flex-shrink-0"
+            ></span>
+          </div>
+          <div
+            class="flex items-center gap-6 px-6 py-[14px] border-r bd flex-shrink-0"
+          >
+            <span
+              class="font-display font-semibold text-[9px] tracking-[.3em] uppercase text-muted whitespace-nowrap"
+              >Node.js</span
+            ><span
+              class="w-[5px] h-[5px] rounded-full bg-soft flex-shrink-0"
+            ></span>
+          </div>
+          <div
+            class="flex items-center gap-6 px-6 py-[14px] border-r bd flex-shrink-0"
+          >
+            <span
+              class="font-display font-semibold text-[9px] tracking-[.3em] uppercase text-muted whitespace-nowrap"
+              >Responsive</span
+            ><span
+              class="w-[5px] h-[5px] rounded-full bg-soft flex-shrink-0"
+            ></span>
+          </div>
+        </div>
+        <div class="flex">
+          <div
+            class="flex items-center gap-6 px-6 py-[14px] border-r bd flex-shrink-0"
+          >
+            <span
+              class="font-display font-semibold text-[9px] tracking-[.3em] uppercase text-muted whitespace-nowrap"
+              >HTML / CSS</span
+            ><span
+              class="w-[5px] h-[5px] rounded-full bg-soft flex-shrink-0"
+            ></span>
+          </div>
+          <div
+            class="flex items-center gap-6 px-6 py-[14px] border-r bd flex-shrink-0"
+          >
+            <span
+              class="font-display font-semibold text-[9px] tracking-[.3em] uppercase text-muted whitespace-nowrap"
+              >JavaScript</span
+            ><span
+              class="w-[5px] h-[5px] rounded-full bg-soft flex-shrink-0"
+            ></span>
+          </div>
+          <div
+            class="flex items-center gap-6 px-6 py-[14px] border-r bd flex-shrink-0"
+          >
+            <span
+              class="font-display font-semibold text-[9px] tracking-[.3em] uppercase text-muted whitespace-nowrap"
+              >Tailwind CSS</span
+            ><span
+              class="w-[5px] h-[5px] rounded-full bg-soft flex-shrink-0"
+            ></span>
+          </div>
+          <div
+            class="flex items-center gap-6 px-6 py-[14px] border-r bd flex-shrink-0"
+          >
+            <span
+              class="font-display font-semibold text-[9px] tracking-[.3em] uppercase text-muted whitespace-nowrap"
+              >React.js</span
+            ><span
+              class="w-[5px] h-[5px] rounded-full bg-soft flex-shrink-0"
+            ></span>
+          </div>
+          <div
+            class="flex items-center gap-6 px-6 py-[14px] border-r bd flex-shrink-0"
+          >
+            <span
+              class="font-display font-semibold text-[9px] tracking-[.3em] uppercase text-muted whitespace-nowrap"
+              >Node.js</span
+            ><span
+              class="w-[5px] h-[5px] rounded-full bg-soft flex-shrink-0"
+            ></span>
+          </div>
+          <div
+            class="flex items-center gap-6 px-6 py-[14px] border-r bd flex-shrink-0"
+          >
+            <span
+              class="font-display font-semibold text-[9px] tracking-[.3em] uppercase text-muted whitespace-nowrap"
+              >Responsive</span
+            ><span
+              class="w-[5px] h-[5px] rounded-full bg-soft flex-shrink-0"
+            ></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="max-w-[1440px] mx-auto px-12 px-s pt-[72px] pb-12 border-b bd r"
+    >
+      <p
+        class="font-body text-[10px] font-semibold tracking-[.42em] uppercase text-muted mb-4"
+      >
+        Journey
+      </p>
+      <h2
+        class="font-display font-black uppercase leading-[1.05]"
+        style="font-size: clamp(26px, 4.2vw, 62px); letter-spacing: 0.05em"
+      >
+        Academic History
+      </h2>
+    </div>
+
+    <div class="border-b bd hover:bg-softer transition-colors duration-200 r">
+      <div
+        class="max-w-[1440px] mx-auto px-12 px-s py-10 grid gap-12 md:grid-cols-[200px_1fr]"
+      >
+        <p
+          class="font-display text-[10px] font-semibold tracking-[.2em] uppercase text-muted pt-1"
+        >
+          Present
+        </p>
+        <div>
+          <p
+            class="font-display font-bold uppercase tracking-[.05em] mb-2"
+            style="font-size: clamp(16px, 2vw, 26px)"
+          >
+            BSc Computing
+          </p>
+          <p
+            class="font-body text-[12px] font-bold tracking-[.3em] uppercase text-muted mb-4"
+          >
+            Global Online Program
+          </p>
+          <p
+            class="font-body leading-[1.72] text-muted max-w-xl"
+            style="font-size: clamp(14px, 1.2vw, 17px)"
+          >
+            Combining theoretical and practical aspects of computing. Building
+            problem-solving and analytical skills to prepare for real-world
+            challenges in the IT industry.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="border-b bd hover:bg-softer transition-colors duration-200 r d1"
+    >
+      <div
+        class="max-w-[1440px] mx-auto px-12 px-s py-10 grid gap-12 md:grid-cols-[200px_1fr]"
+      >
+        <p
+          class="font-display text-[10px] font-semibold tracking-[.2em] uppercase text-muted pt-1"
+        >
+          Completed
+        </p>
+        <div>
+          <p
+            class="font-display font-bold uppercase tracking-[.05em] mb-2"
+            style="font-size: clamp(16px, 2vw, 26px)"
+          >
+            HND Diploma
+          </p>
+          <p
+            class="font-body text-[12px] font-bold tracking-[.3em] uppercase text-muted mb-4"
+          >
+            Higher National Diploma
+          </p>
+          <p
+            class="font-body leading-[1.72] text-muted max-w-xl"
+            style="font-size: clamp(14px, 1.2vw, 17px)"
+          >
+            Established a strong technical foundation and understanding of how
+            systems and software operate.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="border-b bd hover:bg-softer transition-colors duration-200 r d2"
+    >
+      <div
+        class="max-w-[1440px] mx-auto px-12 px-s py-10 grid gap-12 md:grid-cols-[200px_1fr]"
+      >
+        <p
+          class="font-display text-[10px] font-semibold tracking-[.2em] uppercase text-muted pt-1"
+        >
+          Continuous
+        </p>
+        <div>
+          <p
+            class="font-display font-bold uppercase tracking-[.05em] mb-2"
+            style="font-size: clamp(16px, 2vw, 26px)"
+          >
+            Web Dev Courses
+          </p>
+          <p
+            class="font-body text-[12px] font-bold tracking-[.3em] uppercase text-muted mb-4"
+          >
+            Self-Directed Learning
+          </p>
+          <p
+            class="font-body leading-[1.72] text-muted max-w-xl"
+            style="font-size: clamp(14px, 1.2vw, 17px)"
+          >
+            Attended several online courses mastering the basics of HTML, CSS,
+            JavaScript, Tailwind CSS, and responsive design.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <footer class="border-t bd">
+      <div class="max-w-[1440px] mx-auto px-12 px-s pt-20 pb-16 border-b bd r">
+        <p
+          class="font-body text-[11px] font-semibold tracking-[.42em] uppercase text-muted mb-5"
+        >
+          Got a project in mind?
+        </p>
+        <a
+          href="./contact.html"
+          class="inline-flex items-center gap-5 font-display font-black uppercase leading-none hover:opacity-50 transition-opacity duration-200"
+          style="font-size: clamp(26px, 5.5vw, 88px); letter-spacing: 0.04em"
+        >
+          Let's Talk <span class="farr" style="font-size: 0.55em">↗</span>
+        </a>
+      </div>
+      <div
+        class="max-w-[1440px] mx-auto px-12 px-s py-[22px] flex justify-between items-center flex-wrap gap-4"
+      >
+        <span
+          class="font-body text-[11px] font-semibold tracking-[.25em] uppercase text-muted"
+          >© <span class="yr"></span> Win Khant Paing. All rights
+          reserved.</span
+        >
+        <div class="flex gap-7">
+          <a
+            href="#"
+            class="font-body text-[11px] font-semibold tracking-[.25em] uppercase text-muted hover:text-ink transition-colors duration-200"
+            >Twitter</a
+          >
+          <a
+            href="#"
+            class="font-body text-[11px] font-semibold tracking-[.25em] uppercase text-muted hover:text-ink transition-colors duration-200"
+            >GitHub</a
+          >
+          <a
+            href="#"
+            class="font-body text-[11px] font-semibold tracking-[.25em] uppercase text-muted hover:text-ink transition-colors duration-200"
+            >LinkedIn</a
+          >
+          <a
+            href="#"
+            class="font-body text-[11px] font-semibold tracking-[.25em] uppercase text-muted hover:text-ink transition-colors duration-200"
+            >Dribbble</a
+          >
+        </div>
+      </div>
+    </footer>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        document
+          .querySelectorAll(".yr")
+          .forEach((el) => (el.textContent = new Date().getFullYear()));
+        const cur = document.getElementById("cur"),
+          curR = document.getElementById("cur-r");
+        let mx = 0,
+          my = 0,
+          rx = 0,
+          ry = 0;
+        document.addEventListener("mousemove", (e) => {
+          mx = e.clientX;
+          my = e.clientY;
+        });
+        (function loop() {
+          cur.style.left = mx + "px";
+          cur.style.top = my + "px";
+          rx += (mx - rx) * 0.13;
+          ry += (my - ry) * 0.13;
+          curR.style.left = rx + "px";
+          curR.style.top = ry + "px";
+          requestAnimationFrame(loop);
+        })();
+        const mob = document.getElementById("mob-menu");
+        document.getElementById("mob-btn").addEventListener("click", () => {
+          mob.classList.remove("hidden");
+          mob.classList.add("flex");
+          document.body.style.overflow = "hidden";
+        });
+        const closeM = () => {
+          mob.classList.add("hidden");
+          mob.classList.remove("flex");
+          document.body.style.overflow = "";
+        };
+        document.getElementById("mob-close").addEventListener("click", closeM);
+        mob
+          .querySelectorAll("a")
+          .forEach((a) => a.addEventListener("click", closeM));
+        const loader = document.getElementById("loader"),
+          numEl = document.getElementById("loader-num"),
+          fillEl = document.getElementById("loader-fill"),
+          lblEl = document.getElementById("loader-label");
+        document.body.style.overflow = "hidden";
+        let p = 0,
+          loaded = false;
+        window.addEventListener("load", () => {
+          loaded = true;
+          lblEl.textContent = "Ready";
+        });
+        if (document.readyState === "complete") loaded = true;
+        function tick() {
+          p += loaded
+            ? Math.floor(Math.random() * 18) + 6
+            : Math.min(Math.floor(Math.random() * 4) + 1, 90 - p);
+          if (p >= 100) {
+            p = 100;
+            numEl.textContent = 100;
+            fillEl.style.width = "100%";
+            setTimeout(() => {
+              loader.classList.add("gone");
+              document.body.style.overflow = "";
+              setTimeout(initReveal, 400);
+              setTimeout(() => loader.remove(), 1400);
+            }, 550);
+            return;
+          }
+          numEl.textContent = p;
+          fillEl.style.width = p + "%";
+          setTimeout(tick, loaded ? 55 : 90 + Math.random() * 100);
+        }
+        setTimeout(tick, 380);
+        function initReveal() {
+          const obs = new IntersectionObserver(
+            (entries, o) => {
+              entries.forEach((en) => {
+                if (en.isIntersecting) {
+                  en.target.classList.add("v");
+                  o.unobserve(en.target);
+                }
+              });
+            },
+            { rootMargin: "0px 0px -4% 0px", threshold: 0.06 },
+          );
+          document.querySelectorAll(".r").forEach((el) => obs.observe(el));
+        }
+      });
+    </script>
+  </body>
+</html>
