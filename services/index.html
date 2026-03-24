@@ -218,12 +218,12 @@
           >
           <a
             href="../about/"
-            class="font-body text-[13px] font-semibold tracking-[.28em] uppercase text-ink"
+            class="font-body text-[13px] font-semibold tracking-[.28em] uppercase text-muted hover:text-ink transition-colors duration-200"
             >About</a
           >
           <a
             href="../services/"
-            class="font-body text-[13px] font-semibold tracking-[.28em] uppercase text-muted hover:text-ink transition-colors duration-200"
+            class="font-body text-[13px] font-semibold tracking-[.28em] uppercase text-ink"
             >Skills</a
           >
         </div>
@@ -635,7 +635,7 @@
           curR.style.top = ry + "px";
           requestAnimationFrame(loop);
         })();
-        
+
         // FIXED IDs HERE: mmenu -> mob-menu, mbtn -> mob-btn, mclose -> mob-close
         const mm = document.getElementById("mob-menu");
         document.getElementById("mob-btn").addEventListener("click", () => {
@@ -652,7 +652,7 @@
         mm.querySelectorAll("a").forEach((a) =>
           a.addEventListener("click", closeM),
         );
-        
+
         const loader = document.getElementById("loader"),
           lnum = document.getElementById("lnum"),
           lbar = document.getElementById("lbar"),
