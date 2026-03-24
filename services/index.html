@@ -635,8 +635,10 @@
           curR.style.top = ry + "px";
           requestAnimationFrame(loop);
         })();
-        const mm = document.getElementById("mmenu");
-        document.getElementById("mbtn").addEventListener("click", () => {
+        
+        // FIXED IDs HERE: mmenu -> mob-menu, mbtn -> mob-btn, mclose -> mob-close
+        const mm = document.getElementById("mob-menu");
+        document.getElementById("mob-btn").addEventListener("click", () => {
           mm.classList.remove("hidden");
           mm.classList.add("flex");
           document.body.style.overflow = "hidden";
@@ -646,10 +648,11 @@
           mm.classList.remove("flex");
           document.body.style.overflow = "";
         };
-        document.getElementById("mclose").addEventListener("click", closeM);
+        document.getElementById("mob-close").addEventListener("click", closeM);
         mm.querySelectorAll("a").forEach((a) =>
           a.addEventListener("click", closeM),
         );
+        
         const loader = document.getElementById("loader"),
           lnum = document.getElementById("lnum"),
           lbar = document.getElementById("lbar"),
