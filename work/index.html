@@ -1,0 +1,699 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Archive | Win Khant Paing</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              display: ["Orbitron", "sans-serif"],
+              body: ["Rajdhani", "sans-serif"],
+            },
+            colors: {
+              ink: "#111110",
+              muted: "#737373",
+              soft: "#e5e5e5",
+              softer: "#f5f5f5",
+            },
+          },
+        },
+      };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        background: #ffffff;
+        color: #111110;
+        font-family: "Rajdhani", sans-serif;
+        overflow-x: hidden;
+        cursor: none;
+      }
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        pointer-events: none;
+        opacity: 0.045;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      }
+      #cur {
+        position: fixed;
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: #111110;
+        pointer-events: none;
+        z-index: 99999;
+        transform: translate(-50%, -50%);
+        mix-blend-mode: multiply;
+        transition:
+          width 0.12s,
+          height 0.12s;
+      }
+      #curR {
+        position: fixed;
+        width: 34px;
+        height: 34px;
+        border: 1.5px solid #111110;
+        border-radius: 50%;
+        opacity: 0.18;
+        pointer-events: none;
+        z-index: 99998;
+        transform: translate(-50%, -50%);
+        transition:
+          width 0.1s,
+          height 0.1s,
+          opacity 0.1s;
+      }
+      body:has(a:hover) #cur,
+      body:has(button:hover) #cur {
+        width: 16px;
+        height: 16px;
+      }
+      body:has(a:hover) #curR,
+      body:has(button:hover) #curR {
+        width: 52px;
+        height: 52px;
+        opacity: 0.09;
+      }
+      #loader {
+        position: fixed;
+        inset: 0;
+        z-index: 100000;
+        background: #ffffff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition: clip-path 1.1s cubic-bezier(0.76, 0, 0.24, 1);
+      }
+      #loader.gone {
+        clip-path: inset(0 0 100% 0);
+      }
+      #lbar {
+        height: 100%;
+        width: 0%;
+        background: #111110;
+        transition: width 0.07s linear;
+      }
+      .rv {
+        opacity: 0;
+        transform: translateY(26px);
+        transition:
+          opacity 0.82s cubic-bezier(0.16, 1, 0.3, 1),
+          transform 0.82s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .rv.in {
+        opacity: 1;
+        transform: none;
+      }
+      .d1 {
+        transition-delay: 0.08s;
+      }
+      .d2 {
+        transition-delay: 0.17s;
+      }
+      .d3 {
+        transition-delay: 0.28s;
+      }
+      .outline-t {
+        color: transparent;
+        -webkit-text-stroke: 1.5px #111110;
+      }
+      .prow {
+        position: relative;
+        overflow: hidden;
+        display: block;
+        text-decoration: none;
+        color: inherit;
+      }
+      .prow::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: #111110;
+        z-index: 0;
+        transform: translateX(-101%);
+        transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .prow:hover::before {
+        transform: translateX(0);
+      }
+      .prow:hover .pnum,
+      .prow:hover .ptitle,
+      .prow:hover .ptag,
+      .prow:hover .pyr,
+      .prow:hover .parr {
+        color: #ffffff !important;
+      }
+      .prow:hover .ptag {
+        background: rgba(255, 255, 255, 0.12) !important;
+      }
+      .farr {
+        display: inline-block;
+        transition: transform 0.36s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      a:hover .farr {
+        transform: translate(7px, -7px);
+      }
+      .bd {
+        border-color: rgba(17, 17, 16, 0.12);
+      }
+      ::-webkit-scrollbar {
+        width: 4px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #ffffff;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #d4d4d4;
+        border-radius: 9px;
+      }
+      ::selection {
+        background: #111110;
+        color: #ffffff;
+      }
+      @media (max-width: 640px) {
+        .px-s {
+          padding-left: 20px !important;
+          padding-right: 20px !important;
+        }
+        .hide-s {
+          display: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body class="antialiased">
+    <div id="cur"></div>
+    <div id="curR"></div>
+
+    <div id="loader">
+      <p
+        id="llbl"
+        class="font-body text-[10px] font-semibold tracking-[.42em] uppercase text-muted mb-5"
+      >
+        Loading
+      </p>
+      <p
+        id="lnum"
+        class="font-display font-black leading-none text-ink"
+        style="font-size: clamp(90px, 19vw, 260px); letter-spacing: 0.04em"
+      >
+        0
+      </p>
+      <div class="absolute bottom-0 left-0 w-full h-[2px] bg-soft">
+        <div id="lbar"></div>
+      </div>
+    </div>
+
+    <nav
+      class="fixed top-0 left-0 w-full z-50 border-b bd bg-white/90 backdrop-blur-xl"
+      style="background: rgba(255, 255, 255, 0.9)"
+    >
+      <div
+        class="max-w-[1440px] mx-auto px-12 px-s h-[62px] flex items-center justify-between"
+      >
+        <a
+          href="../index.html"
+          class="font-display font-black text-[15px] tracking-[.15em] uppercase text-ink"
+          >W K P</a
+        >
+        <div class="hidden md:flex items-center gap-9">
+          <a
+            href="../work/"
+            class="font-body text-[13px] font-semibold tracking-[.28em] uppercase text-muted hover:text-ink transition-colors duration-200"
+            >Work</a
+          >
+          <a
+            href="../about/"
+            class="font-body text-[13px] font-semibold tracking-[.28em] uppercase text-ink"
+            >About</a
+          >
+          <a
+            href="../services/"
+            class="font-body text-[13px] font-semibold tracking-[.28em] uppercase text-muted hover:text-ink transition-colors duration-200"
+            >Skills</a
+          >
+        </div>
+        <a
+          href="../contact/"
+          class="hidden md:flex font-display font-bold text-[10px] tracking-[.2em] uppercase bg-ink text-white px-5 py-[10px] hover:opacity-75 transition-opacity duration-200"
+          >Let's Talk</a
+        >
+        <button id="mob-btn" class="md:hidden text-ink" aria-label="Open menu">
+          <svg
+            width="22"
+            height="22"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            viewBox="0 0 24 24"
+          >
+            <path stroke-linecap="round" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <div
+      id="mob-menu"
+      class="hidden fixed inset-0 z-[60] bg-white flex-col items-center justify-center gap-8"
+    >
+      <button id="mob-close" class="absolute top-5 right-6 text-ink">
+        <svg
+          width="26"
+          height="26"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          viewBox="0 0 24 24"
+        >
+          <path stroke-linecap="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+      <a
+        href="../work/"
+        class="font-display font-bold uppercase tracking-[.08em] hover:opacity-40 transition-opacity"
+        style="font-size: clamp(22px, 5.5vw, 40px)"
+        >Work</a
+      >
+      <a
+        href="../about/"
+        class="font-display font-bold uppercase tracking-[.08em] hover:opacity-40 transition-opacity"
+        style="font-size: clamp(22px, 5.5vw, 40px)"
+        >About</a
+      >
+      <a
+        href="../services/"
+        class="font-display font-bold uppercase tracking-[.08em] hover:opacity-40 transition-opacity"
+        style="font-size: clamp(22px, 5.5vw, 40px)"
+        >Skills</a
+      >
+      <a
+        href="../contact/"
+        class="font-display font-bold uppercase tracking-[.08em] hover:opacity-40 transition-opacity"
+        style="font-size: clamp(22px, 5.5vw, 40px)"
+        >Contact</a
+      >
+    </div>
+
+    <div
+      class="max-w-[1440px] mx-auto px-12 px-s pt-[120px] pb-14 border-b bd rv"
+    >
+      <div class="flex items-center gap-4 mb-7">
+        <span
+          class="block w-7 h-px flex-shrink-0"
+          style="background: #737373"
+        ></span>
+        <span
+          class="font-body text-[10px] font-semibold tracking-[.42em] uppercase text-muted"
+          >Index</span
+        >
+      </div>
+      <h1
+        class="font-display font-black uppercase leading-[.93]"
+        style="font-size: clamp(32px, 6.8vw, 104px); letter-spacing: 0.03em"
+      >
+        <div class="rv d1">The</div>
+        <div class="outline-t rv d2">Archive</div>
+      </h1>
+      <p
+        class="font-body leading-[1.75] text-muted mt-7 max-w-lg rv d3"
+        style="font-size: clamp(15px, 1.35vw, 19px)"
+      >
+        A collection of web development projects, responsive designs, and
+        academic experiments bridging theoretical concepts with practical
+        application.
+      </p>
+    </div>
+
+    <div
+      class="max-w-[1440px] mx-auto px-12 px-s py-8 border-b bd flex flex-wrap gap-3 rv"
+    >
+      <button
+        class="fbtn font-display font-bold text-[9px] tracking-[.2em] uppercase px-5 py-[9px] border bg-ink text-white border-ink"
+      >
+        All
+      </button>
+      <button
+        class="fbtn font-display font-bold text-[9px] tracking-[.2em] uppercase px-5 py-[9px] border border-soft text-muted hover:border-ink hover:text-ink transition-colors duration-200"
+      >
+        HTML / CSS
+      </button>
+      <button
+        class="fbtn font-display font-bold text-[9px] tracking-[.2em] uppercase px-5 py-[9px] border border-soft text-muted hover:border-ink hover:text-ink transition-colors duration-200"
+      >
+        JavaScript
+      </button>
+      <button
+        class="fbtn font-display font-bold text-[9px] tracking-[.2em] uppercase px-5 py-[9px] border border-soft text-muted hover:border-ink hover:text-ink transition-colors duration-200"
+      >
+        Tailwind CSS
+      </button>
+      <button
+        class="fbtn font-display font-bold text-[9px] tracking-[.2em] uppercase px-5 py-[9px] border border-soft text-muted hover:border-ink hover:text-ink transition-colors duration-200"
+      >
+        React / Concept
+      </button>
+    </div>
+
+    <section class="border-b bd">
+      <a href="#" class="prow border-b bd rv">
+        <div
+          class="relative z-[1] grid max-w-[1440px] mx-auto px-12 px-s"
+          style="
+            grid-template-columns: 52px 1fr auto;
+            align-items: center;
+            min-height: 92px;
+          "
+        >
+          <span
+            class="pnum font-display text-[10px] font-normal tracking-[.1em] text-muted"
+            >01</span
+          >
+          <div class="py-5">
+            <p
+              class="ptitle font-display font-bold uppercase tracking-[.05em] mb-[10px] text-ink"
+              style="font-size: clamp(15px, 1.9vw, 26px)"
+            >
+              E-Commerce Interface
+            </p>
+            <div class="flex gap-2 flex-wrap">
+              <span
+                class="ptag font-body text-[10px] font-bold tracking-[.2em] uppercase px-3 py-[3px] bg-soft text-muted"
+                >HTML/CSS</span
+              ><span
+                class="ptag font-body text-[10px] font-bold tracking-[.2em] uppercase px-3 py-[3px] bg-soft text-muted"
+                >Tailwind CSS</span
+              >
+            </div>
+          </div>
+          <div class="flex items-center gap-4 hide-s">
+            <span
+              class="pyr font-body text-[11px] font-semibold tracking-[.28em] text-muted"
+              >2024</span
+            ><span class="parr text-[22px] text-muted leading-none"
+              >&#8599;</span
+            >
+          </div>
+        </div>
+      </a>
+
+      <a href="#" class="prow border-b bd rv d1">
+        <div
+          class="relative z-[1] grid max-w-[1440px] mx-auto px-12 px-s"
+          style="
+            grid-template-columns: 52px 1fr auto;
+            align-items: center;
+            min-height: 92px;
+          "
+        >
+          <span
+            class="pnum font-display text-[10px] font-normal tracking-[.1em] text-muted"
+            >02</span
+          >
+          <div class="py-5">
+            <p
+              class="ptitle font-display font-bold uppercase tracking-[.05em] mb-[10px] text-ink"
+              style="font-size: clamp(15px, 1.9vw, 26px)"
+            >
+              Interactive Dashboard
+            </p>
+            <div class="flex gap-2 flex-wrap">
+              <span
+                class="ptag font-body text-[10px] font-bold tracking-[.2em] uppercase px-3 py-[3px] bg-soft text-muted"
+                >JavaScript</span
+              ><span
+                class="ptag font-body text-[10px] font-bold tracking-[.2em] uppercase px-3 py-[3px] bg-soft text-muted"
+                >Logic</span
+              >
+            </div>
+          </div>
+          <div class="flex items-center gap-4 hide-s">
+            <span
+              class="pyr font-body text-[11px] font-semibold tracking-[.28em] text-muted"
+              >2024</span
+            ><span class="parr text-[22px] text-muted leading-none"
+              >&#8599;</span
+            >
+          </div>
+        </div>
+      </a>
+
+      <a href="#" class="prow border-b bd rv d2">
+        <div
+          class="relative z-[1] grid max-w-[1440px] mx-auto px-12 px-s"
+          style="
+            grid-template-columns: 52px 1fr auto;
+            align-items: center;
+            min-height: 92px;
+          "
+        >
+          <span
+            class="pnum font-display text-[10px] font-normal tracking-[.1em] text-muted"
+            >03</span
+          >
+          <div class="py-5">
+            <p
+              class="ptitle font-display font-bold uppercase tracking-[.05em] mb-[10px] text-ink"
+              style="font-size: clamp(15px, 1.9vw, 26px)"
+            >
+              Student Portal Prototype
+            </p>
+            <div class="flex gap-2 flex-wrap">
+              <span
+                class="ptag font-body text-[10px] font-bold tracking-[.2em] uppercase px-3 py-[3px] bg-soft text-muted"
+                >React.js</span
+              ><span
+                class="ptag font-body text-[10px] font-bold tracking-[.2em] uppercase px-3 py-[3px] bg-soft text-muted"
+                >Concept</span
+              >
+            </div>
+          </div>
+          <div class="flex items-center gap-4 hide-s">
+            <span
+              class="pyr font-body text-[11px] font-semibold tracking-[.28em] text-muted"
+              >2023</span
+            ><span class="parr text-[22px] text-muted leading-none"
+              >&#8599;</span
+            >
+          </div>
+        </div>
+      </a>
+
+      <a href="#" class="prow border-b bd rv">
+        <div
+          class="relative z-[1] grid max-w-[1440px] mx-auto px-12 px-s"
+          style="
+            grid-template-columns: 52px 1fr auto;
+            align-items: center;
+            min-height: 92px;
+          "
+        >
+          <span
+            class="pnum font-display text-[10px] font-normal tracking-[.1em] text-muted"
+            >04</span
+          >
+          <div class="py-5">
+            <p
+              class="ptitle font-display font-bold uppercase tracking-[.05em] mb-[10px] text-ink"
+              style="font-size: clamp(15px, 1.9vw, 26px)"
+            >
+              Personal Portfolio
+            </p>
+            <div class="flex gap-2 flex-wrap">
+              <span
+                class="ptag font-body text-[10px] font-bold tracking-[.2em] uppercase px-3 py-[3px] bg-soft text-muted"
+                >Responsive Design</span
+              ><span
+                class="ptag font-body text-[10px] font-bold tracking-[.2em] uppercase px-3 py-[3px] bg-soft text-muted"
+                >Tailwind CSS</span
+              >
+            </div>
+          </div>
+          <div class="flex items-center gap-4 hide-s">
+            <span
+              class="pyr font-body text-[11px] font-semibold tracking-[.28em] text-muted"
+              >2023</span
+            ><span class="parr text-[22px] text-muted leading-none"
+              >&#8599;</span
+            >
+          </div>
+        </div>
+      </a>
+    </section>
+
+    <footer class="border-t bd">
+      <div class="max-w-[1440px] mx-auto px-12 px-s pt-20 pb-16 border-b bd rv">
+        <p
+          class="font-body text-[11px] font-semibold tracking-[.4em] uppercase text-muted mb-5"
+        >
+          Got a project in mind?
+        </p>
+        <a
+          href="contact.html"
+          class="inline-flex items-center gap-5 font-display font-black uppercase leading-none hover:opacity-50 transition-opacity duration-200"
+          style="font-size: clamp(28px, 5.5vw, 88px); letter-spacing: 0.04em"
+        >
+          Let's Talk <span class="farr" style="font-size: 0.55em">&#8599;</span>
+        </a>
+      </div>
+      <div
+        class="max-w-[1440px] mx-auto px-12 px-s py-5 flex justify-between items-center flex-wrap gap-4"
+      >
+        <span
+          class="font-body text-[11px] font-semibold tracking-[.24em] uppercase text-muted"
+          >&copy; <span class="yr"></span> Win Khant Paing. All rights
+          reserved.</span
+        >
+        <div class="flex gap-6">
+          <a
+            href="#"
+            class="font-body text-[11px] font-semibold tracking-[.24em] uppercase text-muted hover:text-ink transition-colors duration-200"
+            >Twitter</a
+          >
+          <a
+            href="#"
+            class="font-body text-[11px] font-semibold tracking-[.24em] uppercase text-muted hover:text-ink transition-colors duration-200"
+            >GitHub</a
+          >
+          <a
+            href="#"
+            class="font-body text-[11px] font-semibold tracking-[.24em] uppercase text-muted hover:text-ink transition-colors duration-200"
+            >LinkedIn</a
+          >
+          <a
+            href="#"
+            class="font-body text-[11px] font-semibold tracking-[.24em] uppercase text-muted hover:text-ink transition-colors duration-200"
+            >Dribbble</a
+          >
+        </div>
+      </div>
+    </footer>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        document
+          .querySelectorAll(".yr")
+          .forEach((el) => (el.textContent = new Date().getFullYear()));
+        const page = location.pathname.split("/").pop() || "index.html";
+        document.querySelectorAll(".nav-lnk").forEach((a) => {
+          if (a.getAttribute("href") === page) {
+            a.classList.remove("text-muted");
+            a.classList.add("text-ink");
+          }
+        });
+        const cur = document.getElementById("cur"),
+          curR = document.getElementById("curR");
+        let mx = 0,
+          my = 0,
+          rx = 0,
+          ry = 0;
+        document.addEventListener("mousemove", (e) => {
+          mx = e.clientX;
+          my = e.clientY;
+        });
+        (function loop() {
+          cur.style.left = mx + "px";
+          cur.style.top = my + "px";
+          rx += (mx - rx) * 0.13;
+          ry += (my - ry) * 0.13;
+          curR.style.left = rx + "px";
+          curR.style.top = ry + "px";
+          requestAnimationFrame(loop);
+        })();
+        const mm = document.getElementById("mmenu");
+        document.getElementById("mbtn").addEventListener("click", () => {
+          mm.classList.remove("hidden");
+          mm.classList.add("flex");
+          document.body.style.overflow = "hidden";
+        });
+        const closeM = () => {
+          mm.classList.add("hidden");
+          mm.classList.remove("flex");
+          document.body.style.overflow = "";
+        };
+        document.getElementById("mclose").addEventListener("click", closeM);
+        mm.querySelectorAll("a").forEach((a) =>
+          a.addEventListener("click", closeM),
+        );
+        const loader = document.getElementById("loader"),
+          lnum = document.getElementById("lnum"),
+          lbar = document.getElementById("lbar"),
+          llbl = document.getElementById("llbl");
+        document.body.style.overflow = "hidden";
+        let p = 0,
+          done = false;
+        window.addEventListener("load", () => {
+          done = true;
+          llbl.textContent = "Ready";
+        });
+        if (document.readyState === "complete") done = true;
+        function tick() {
+          p += done
+            ? Math.floor(Math.random() * 18) + 6
+            : Math.min(Math.floor(Math.random() * 4) + 1, 90 - p);
+          if (p >= 100) {
+            lnum.textContent = 100;
+            lbar.style.width = "100%";
+            setTimeout(() => {
+              loader.classList.add("gone");
+              document.body.style.overflow = "";
+              setTimeout(initReveal, 350);
+              setTimeout(() => loader.remove(), 1300);
+            }, 500);
+            return;
+          }
+          lnum.textContent = p;
+          lbar.style.width = p + "%";
+          setTimeout(tick, done ? 50 : 85 + Math.random() * 90);
+        }
+        setTimeout(tick, 350);
+        function initReveal() {
+          const io = new IntersectionObserver(
+            (entries, obs) => {
+              entries.forEach((en) => {
+                if (en.isIntersecting) {
+                  en.target.classList.add("in");
+                  obs.unobserve(en.target);
+                }
+              });
+            },
+            { rootMargin: "0px 0px -5% 0px", threshold: 0.05 },
+          );
+          document.querySelectorAll(".rv").forEach((el) => io.observe(el));
+        }
+        document.querySelectorAll(".fbtn").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            document.querySelectorAll(".fbtn").forEach((b) => {
+              b.classList.remove("bg-ink", "text-white", "border-ink");
+              b.classList.add("border-soft", "text-muted");
+            });
+            btn.classList.add("bg-ink", "text-white", "border-ink");
+            btn.classList.remove("border-soft", "text-muted");
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
